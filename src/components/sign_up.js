@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { renderInput } from '../helpers';
+import { signUp } from '../actions';
+import { connect } from 'react-redux';
 
 class SignUp extends Component {
 
     handleSignUp(vals){
         console.log('Values:', vals);
+
+        this.props.signUp(vals);
     }
 
     render(){
@@ -22,6 +26,7 @@ class SignUp extends Component {
                                     <Field name='email' type='text' placeholder='Enter email address' component={renderInput}></Field>
                                     <Field name='password' type='password' placeholder='Enter password' component={renderInput}></Field>
                                     <Field name='confirmPassword' type='password' placeholder='Confirm password' component={renderInput}></Field>
+                                    <div className='center-align red-text'>{this.props.formError}</div>
                                     <div className='right-align'>
                                         <button className='btn cyan lighten-1'>Sign Up</button>
                                     </div>
@@ -58,4 +63,10 @@ SignUp = reduxForm({
     validate: validate
 })(SignUp);
 
-export default SignUp;
+function mapStateToProps(state){
+    return{
+        formError: state.user.error
+    }
+}
+
+export default connect(mapStateToProps, { signUp })(SignUp);
