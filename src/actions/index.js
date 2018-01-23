@@ -12,6 +12,11 @@ export function signUp(cred){
             localStorage.setItem('token', resp.data.token);
 
             dispatch({types: types.SIGN_UP});
+        }).catch(err => {
+            dispatch({
+                type: types.ERROR,
+                payload: err.response.data.error
+            });
         });
     }
 }
